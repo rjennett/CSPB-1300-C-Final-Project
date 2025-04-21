@@ -5,7 +5,7 @@ CSPB 1300 Image Processing Application
 PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
 
 - Your name:
-    <ANSWER>
+    Ryan Jennett
 
 - All project requirements fully met? (YES or NO):
     <ANSWER>
@@ -233,12 +233,6 @@ bool write_image(string filename, const vector<vector<Pixel>>& image)
 //                                DO NOT MODIFY THE SECTION ABOVE                                    //
 //***************************************************************************************************//
 
-struct Pixel {
-    int red;
-    int green;
-    int blue;
-};
-
 /**
  * Process 0: copy the image directly to the output file
  * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
@@ -262,73 +256,88 @@ vector<vector<Pixel>> process_0(const vector<vector<Pixel>>& image) {
             new_image[row][col].blue = blue_color;
         }
     }
+    return new_image;
 };
 
 
 int main() {
     //run the CLI for the image processing app
+
+    //startup
     cout << "CSPB 1300 Image Processing Application" << endl;
     cout << "Enter input BMP filename: " << endl;
     
+    //store input file name
     string input_file;
     cin >> input_file;
 
-    cout << "IMAGE PROCESSING MENU" << endl;
-    cout << "0) Change image (current: " << input_file << ")" << endl;
-    cout << "1) Vignette" << endl;
-    cout << "2) Clarendon" << endl;
-    cout << "3) Grayscale" << endl;
-    cout << "4) Rotate 90 degrees" << endl;
-    cout << "5) Rotate multiple 90 degrees" << endl;
-    cout << "6) Enlarge" << endl;
-    cout << "7) High contrast" << endl;
-    cout << "8) Lighten" << endl;
-    cout << "9) Darken" << endl;
-    cout << "10) Black, white, red, green, blue" << endl;
+    //define to control loop, checking for 'Q'
+    char menu_selection;
 
-    cout << endl;
-    cout << "Enter menu selection (Q to quit): " << endl;
-    cout << endl;
-
-    string menu_selection;
-    cin >> menu_selection;
-
-    cout << menu_selection << " selected" << endl;
-    cout << "Enter output BMP filename: ";
-
-    string output_file;
-    cin >> output_file;
-
-    //call read_image()
-    vector<vector<Pixel>> input_bmp = read_image(input_file);
-
-    //TODO: call processing function
-    vector<vector<Pixel>> processed_image = process_0(input_bmp);
-
-    //TODO: call write_image()
-    bool success = write_image(output_file, processed_image);
-    
-    //check for successful return from write_image()
-    if(success) {
-        cout << "Successfully applied " << menu_selection << "!" << endl;
-    }
-    else {
-        cout << "Failed" << endl;
-    }
-
-    //control flow
-
-    //startup
-    //enter file name
     do{
-        //display menu
+        //display CLI menu
+        cout << "IMAGE PROCESSING MENU" << endl;
+        cout << "0) Change image (current: " << input_file << ")" << endl;
+        cout << "1) Vignette" << endl;
+        cout << "2) Clarendon" << endl;
+        cout << "3) Grayscale" << endl;
+        cout << "4) Rotate 90 degrees" << endl;
+        cout << "5) Rotate multiple 90 degrees" << endl;
+        cout << "6) Enlarge" << endl;
+        cout << "7) High contrast" << endl;
+        cout << "8) Lighten" << endl;
+        cout << "9) Darken" << endl;
+        cout << "10) Black, white, red, green, blue" << endl;
+
+        cout << endl;
+        cout << "Enter menu selection (Q to quit): ";
+
+        //store menu selection
+        cin >> menu_selection;
+
+        //quit interrupt
+        if(menu_selection == 'Q') {
+            break;
+        }
+
         //receive menu_selection
-        //action
-        //result
-        //display menu
+        //store output file name
+        cout << endl;
+        cout << menu_selection << " selected" << endl;
+
+        //TODO: check for input 0 and handle changing the input file name
+        if(menu_selection == '0') {
+            cout << "Enter new input BMP filename: ";
+            cin >> input_file;
+            cout << "Successfully changed input image!" << endl;
+        }
+        else {
+            cout << "Enter output BMP filename: ";
+            string output_file;
+            cin >> output_file;
+    
+            //action
+            //call read_image()
+            vector<vector<Pixel>> input_bmp = read_image(input_file);
+    
+            //call processing function
+            vector<vector<Pixel>> processed_image = process_0(input_bmp);
+    
+            //store the bool output of write_image()
+            bool success = write_image(output_file, processed_image);
+    
+            //result
+            //check for successful return from write_image()
+            if(success) {
+                cout << "Successfully applied " << menu_selection << "!" << endl;
+            }
+            else {
+                cout << "Failed" << endl;
+            }
+        }
+
     }
-    //while menu_selection != 'Q'
-    while(true);
+    while(menu_selection != 'Q');
 
     return 0;
 }
