@@ -259,6 +259,300 @@ vector<vector<Pixel>> process_0(const vector<vector<Pixel>>& image) {
     return new_image;
 };
 
+/**
+ * Process 1: Vignette
+ * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
+ */
+vector<vector<Pixel>> process_1(const vector<vector<Pixel>>& image) {
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for(int row = 0; row < num_rows; row++) {
+        for(int col = 0; col < num_columns; col++) {
+            //find distance to center
+            double distance = sqrt(pow((col - num_columns/2), 2) + pow((row - num_rows/2), 2));
+            double scaling_factor = (num_columns - distance)/num_columns;
+
+            //store each pixel value at vector index
+            int red_color = image[row][col].red;
+            int blue_color = image[row][col].blue;
+            int green_color = image[row][col].green;
+
+            //calculate new color values
+            double new_red = red_color * scaling_factor;
+            double new_blue = blue_color * scaling_factor;
+            double new_green = green_color * scaling_factor;
+
+            //set each output pixel value to the input pixel value at vector index
+            new_image[row][col].red = new_red;
+            new_image[row][col].green = new_green;
+            new_image[row][col].blue = new_blue;
+        }
+    }
+    return new_image;
+};
+
+/**
+ * Process 2: Clarendon
+ * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
+ */
+vector<vector<Pixel>> process_2(const vector<vector<Pixel>>& image) {
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+    double scaling_factor = 0.3;
+
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for(int row = 0; row < num_rows; row++) {
+        for(int col = 0; col < num_columns; col++) {
+            //store each pixel value at vector index
+            int red_color = image[row][col].red;
+            int blue_color = image[row][col].blue;
+            int green_color = image[row][col].green;
+
+            //calculate average of rgb values
+            double average_value = (red_color + blue_color + green_color)/3;
+
+            //if the pixel is light, make it lighter
+            double new_red;
+            double new_blue;
+            double new_green;
+
+            if(average_value >= 170) {
+                new_red = int(255 - (255 - red_color)*scaling_factor);
+                new_blue =  int(255 - (255 - blue_color)*scaling_factor);
+                new_green = int(255 - (255 - green_color)*scaling_factor);
+            }
+            else if(average_value < 90) {
+                new_red = red_color * scaling_factor;
+                new_blue =  blue_color * scaling_factor;
+                new_green = green_color * scaling_factor;
+            }
+            else{
+                new_red = red_color;
+                new_blue =  blue_color;
+                new_green = green_color;
+            }
+
+            //set each output pixel value to the input pixel value at vector index
+            new_image[row][col].red = new_red;
+            new_image[row][col].green = new_green;
+            new_image[row][col].blue = new_blue;
+        }
+    }
+    return new_image;
+};
+
+/**
+ * Process 3: 
+ * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
+ */
+vector<vector<Pixel>> process_3(const vector<vector<Pixel>>& image) {
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for(int row = 0; row < num_rows; row++) {
+        for(int col = 0; col < num_columns; col++) {
+            //store each pixel value at vector index
+            int red_color = image[row][col].red;
+            int blue_color = image[row][col].blue;
+            int green_color = image[row][col].green;
+
+            //set each output pixel value to the input pixel value at vector index
+            new_image[row][col].red = red_color;
+            new_image[row][col].green = green_color;
+            new_image[row][col].blue = blue_color;
+        }
+    }
+    return new_image;
+};
+
+/**
+ * Process 4: 
+ * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
+ */
+vector<vector<Pixel>> process_4(const vector<vector<Pixel>>& image) {
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for(int row = 0; row < num_rows; row++) {
+        for(int col = 0; col < num_columns; col++) {
+            //store each pixel value at vector index
+            int red_color = image[row][col].red;
+            int blue_color = image[row][col].blue;
+            int green_color = image[row][col].green;
+
+            //set each output pixel value to the input pixel value at vector index
+            new_image[row][col].red = red_color;
+            new_image[row][col].green = green_color;
+            new_image[row][col].blue = blue_color;
+        }
+    }
+    return new_image;
+};
+
+/**
+ * Process 5: 
+ * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
+ */
+vector<vector<Pixel>> process_5(const vector<vector<Pixel>>& image) {
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for(int row = 0; row < num_rows; row++) {
+        for(int col = 0; col < num_columns; col++) {
+            //store each pixel value at vector index
+            int red_color = image[row][col].red;
+            int blue_color = image[row][col].blue;
+            int green_color = image[row][col].green;
+
+            //set each output pixel value to the input pixel value at vector index
+            new_image[row][col].red = red_color;
+            new_image[row][col].green = green_color;
+            new_image[row][col].blue = blue_color;
+        }
+    }
+    return new_image;
+};
+
+/**
+ * Process 6: 
+ * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
+ */
+vector<vector<Pixel>> process_6(const vector<vector<Pixel>>& image) {
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for(int row = 0; row < num_rows; row++) {
+        for(int col = 0; col < num_columns; col++) {
+            //store each pixel value at vector index
+            int red_color = image[row][col].red;
+            int blue_color = image[row][col].blue;
+            int green_color = image[row][col].green;
+
+            //set each output pixel value to the input pixel value at vector index
+            new_image[row][col].red = red_color;
+            new_image[row][col].green = green_color;
+            new_image[row][col].blue = blue_color;
+        }
+    }
+    return new_image;
+};
+
+/**
+ * Process 7: 
+ * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
+ */
+vector<vector<Pixel>> process_7(const vector<vector<Pixel>>& image) {
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for(int row = 0; row < num_rows; row++) {
+        for(int col = 0; col < num_columns; col++) {
+            //store each pixel value at vector index
+            int red_color = image[row][col].red;
+            int blue_color = image[row][col].blue;
+            int green_color = image[row][col].green;
+
+            //set each output pixel value to the input pixel value at vector index
+            new_image[row][col].red = red_color;
+            new_image[row][col].green = green_color;
+            new_image[row][col].blue = blue_color;
+        }
+    }
+    return new_image;
+};
+
+/**
+ * Process 8: 
+ * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
+ */
+vector<vector<Pixel>> process_8(const vector<vector<Pixel>>& image) {
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for(int row = 0; row < num_rows; row++) {
+        for(int col = 0; col < num_columns; col++) {
+            //store each pixel value at vector index
+            int red_color = image[row][col].red;
+            int blue_color = image[row][col].blue;
+            int green_color = image[row][col].green;
+
+            //set each output pixel value to the input pixel value at vector index
+            new_image[row][col].red = red_color;
+            new_image[row][col].green = green_color;
+            new_image[row][col].blue = blue_color;
+        }
+    }
+    return new_image;
+};
+
+/**
+ * Process 9: 
+ * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
+ */
+vector<vector<Pixel>> process_9(const vector<vector<Pixel>>& image) {
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for(int row = 0; row < num_rows; row++) {
+        for(int col = 0; col < num_columns; col++) {
+            //store each pixel value at vector index
+            int red_color = image[row][col].red;
+            int blue_color = image[row][col].blue;
+            int green_color = image[row][col].green;
+
+            //set each output pixel value to the input pixel value at vector index
+            new_image[row][col].red = red_color;
+            new_image[row][col].green = green_color;
+            new_image[row][col].blue = blue_color;
+        }
+    }
+    return new_image;
+};
+
+/**
+ * Process 10: 
+ * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
+ */
+vector<vector<Pixel>> process_10(const vector<vector<Pixel>>& image) {
+    int num_rows = image.size();
+    int num_columns = image[0].size();
+
+    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+
+    for(int row = 0; row < num_rows; row++) {
+        for(int col = 0; col < num_columns; col++) {
+            //store each pixel value at vector index
+            int red_color = image[row][col].red;
+            int blue_color = image[row][col].blue;
+            int green_color = image[row][col].green;
+
+            //set each output pixel value to the input pixel value at vector index
+            new_image[row][col].red = red_color;
+            new_image[row][col].green = green_color;
+            new_image[row][col].blue = blue_color;
+        }
+    }
+    return new_image;
+};
+
 
 int main() {
     //run the CLI for the image processing app
@@ -305,7 +599,7 @@ int main() {
         cout << endl;
         cout << menu_selection << " selected" << endl;
 
-        //TODO: check for input 0 and handle changing the input file name
+        //Check for input 0 and handle changing the input file name
         if(menu_selection == '0') {
             cout << "Enter new input BMP filename: ";
             cin >> input_file;
@@ -320,8 +614,51 @@ int main() {
             //call read_image()
             vector<vector<Pixel>> input_bmp = read_image(input_file);
     
-            //call processing function
-            vector<vector<Pixel>> processed_image = process_0(input_bmp);
+            //call processing function that was selected
+            vector<vector<Pixel>> processed_image;
+            string selection_name;
+
+            if(menu_selection == '1') {
+                processed_image = process_1(input_bmp);
+                selection_name = "Vignette";
+            }
+            else if(menu_selection == '2') {
+                processed_image = process_2(input_bmp);
+                selection_name = "Clarendon";
+            }
+            else if(menu_selection == '3') {
+                processed_image = process_3(input_bmp);
+                selection_name = "Grayscale";
+            }
+            else if(menu_selection == '4') {
+                processed_image = process_4(input_bmp);
+                selection_name = "Rotate 90 degrees";
+            }
+            else if(menu_selection == '5') {
+                processed_image = process_5(input_bmp);
+                selection_name = "Rotate multiple 90 degrees";
+            }
+            else if(menu_selection == '6') {
+                processed_image = process_6(input_bmp);
+                selection_name = "Enlarge";
+            }
+            else if(menu_selection == '7') {
+                processed_image = process_7(input_bmp);
+                selection_name = "High contrast";
+            }
+            else if(menu_selection == '8') {
+                processed_image = process_8(input_bmp);
+                selection_name = "Lighten";
+            }
+            else if(menu_selection == '9') {
+                processed_image = process_9(input_bmp);
+                selection_name = "Darken";
+            }
+            //TODO: handle 10 char input
+            // else if(menu_selection == '10') {
+            //     processed_image = process_10(input_bmp);
+            //     selection_name = "Black, white, red, green, blue";
+            // }
     
             //store the bool output of write_image()
             bool success = write_image(output_file, processed_image);
@@ -329,7 +666,7 @@ int main() {
             //result
             //check for successful return from write_image()
             if(success) {
-                cout << "Successfully applied " << menu_selection << "!" << endl;
+                cout << "Successfully applied " << selection_name << "!" << endl;
             }
             else {
                 cout << "Failed" << endl;
