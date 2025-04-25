@@ -346,7 +346,7 @@ vector<vector<Pixel>> process_2(const vector<vector<Pixel>>& image) {
 };
 
 /**
- * Process 3: 
+ * Process 3: Grayscale
  * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
  */
 vector<vector<Pixel>> process_3(const vector<vector<Pixel>>& image) {
@@ -362,17 +362,20 @@ vector<vector<Pixel>> process_3(const vector<vector<Pixel>>& image) {
             int blue_color = image[row][col].blue;
             int green_color = image[row][col].green;
 
+            //average the pixel values
+            double gray_value = (red_color + blue_color + green_color) / 3;
+
             //set each output pixel value to the input pixel value at vector index
-            new_image[row][col].red = red_color;
-            new_image[row][col].green = green_color;
-            new_image[row][col].blue = blue_color;
+            new_image[row][col].red = gray_value;
+            new_image[row][col].green = gray_value;
+            new_image[row][col].blue = gray_value;
         }
     }
     return new_image;
 };
 
 /**
- * Process 4: 
+ * Process 4: Rotate 90 degrees
  * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
  */
 vector<vector<Pixel>> process_4(const vector<vector<Pixel>>& image) {
@@ -388,10 +391,13 @@ vector<vector<Pixel>> process_4(const vector<vector<Pixel>>& image) {
             int blue_color = image[row][col].blue;
             int green_color = image[row][col].green;
 
+            //adjust new pixel location
+            int new_row = (num_rows - 1) - row;
+
             //set each output pixel value to the input pixel value at vector index
-            new_image[row][col].red = red_color;
-            new_image[row][col].green = green_color;
-            new_image[row][col].blue = blue_color;
+            new_image[new_row][col].red = red_color;
+            new_image[new_row][col].green = green_color;
+            new_image[new_row][col].blue = blue_color;
         }
     }
     return new_image;
