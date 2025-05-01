@@ -451,9 +451,6 @@ vector<vector<Pixel>> process_6(const vector<vector<Pixel>>& image, int x_scale,
 
     for(int row = 0; row < (new_num_rows); row++) {
         for(int col = 0; col < (new_num_cols); col++) {
-            if((row % 2000) == 0) {
-                int stop = 1;
-            }
             //intentionally truncate de-scaled pixel coordinates
             int de_scaled_row = row / y_scale;
             int de_scaled_col = col / x_scale;
