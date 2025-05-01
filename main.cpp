@@ -8,13 +8,16 @@ PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
     Ryan Jennett
 
 - All project requirements fully met? (YES or NO):
-    <ANSWER>
+    NO
 
 - If no, please explain what you could not get to work:
-    <ANSWER>
+    - "Display an error message if the operation failed"
+        The provided function write_image() is supposed to return false if it fails,
+        but in my testing I only ran into segmentation fault crashes, which can't be
+        captured like typical errors.
 
 - Did you do any optional enhancements? If so, please explain:
-    <ANSWER>
+    NO
 */
 
 #include <iostream>
@@ -635,9 +638,8 @@ vector<vector<Pixel>> process_10(const vector<vector<Pixel>>& image) {
     return new_image;
 };
 
-
-int main() {
-    //run the CLI for the image processing app
+//run the CLI for the image processing app
+void cli_process() {
 
     //startup
     cout << "CSPB 1300 Image Processing Application" << endl;
@@ -780,6 +782,17 @@ int main() {
 
     }
     while(menu_selection != "Q");
+}
+
+
+int main() {
+    try {
+        cli_process();
+    }
+    catch(...) {
+        cout << "An error occurred in the image processing application.";
+        exit;
+    }
 
     return 0;
 }
