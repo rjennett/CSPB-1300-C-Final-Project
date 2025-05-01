@@ -382,7 +382,8 @@ vector<vector<Pixel>> process_4(const vector<vector<Pixel>>& image) {
     int num_rows = image.size();
     int num_columns = image[0].size();
 
-    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+    //transpose the number of rows and columns for the new image
+    vector<vector<Pixel>> new_image(num_columns, vector<Pixel>(num_rows));
 
     for(int row = 0; row < num_rows; row++) {
         for(int col = 0; col < num_columns; col++) {
@@ -392,12 +393,13 @@ vector<vector<Pixel>> process_4(const vector<vector<Pixel>>& image) {
             int green_color = image[row][col].green;
 
             //adjust new pixel location
-            int new_row = (num_rows - 1) - row;
+            int new_col = (num_rows - 1) - row;
+            int new_row = col;
 
             //set each output pixel value to the input pixel value at vector index
-            new_image[col][new_row].red = red_color;
-            new_image[col][new_row].green = green_color;
-            new_image[col][new_row].blue = blue_color;
+            new_image[new_row][new_col].red = red_color;
+            new_image[new_row][new_col].green = green_color;
+            new_image[new_row][new_col].blue = blue_color;
         }
     }
     return new_image;
@@ -407,30 +409,33 @@ vector<vector<Pixel>> process_4(const vector<vector<Pixel>>& image) {
  * Process 5: Rotate multiple 90 degrees
  * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
  */
-vector<vector<Pixel>> process_5(const vector<vector<Pixel>>& image) {
+vector<vector<Pixel>> process_5(const vector<vector<Pixel>>& image, int number) {
     int num_rows = image.size();
     int num_columns = image[0].size();
 
-    vector<vector<Pixel>> new_image(num_rows, vector<Pixel>(num_columns));
+    int angle = number * 90;
 
-    for(int row = 0; row < num_rows; row++) {
-        for(int col = 0; col < num_columns; col++) {
-            //store each pixel value at vector index
-            int red_color = image[row][col].red;
-            int blue_color = image[row][col].blue;
-            int green_color = image[row][col].green;
-
-            //set each output pixel value to the input pixel value at vector index
-            new_image[row][col].red = red_color;
-            new_image[row][col].green = green_color;
-            new_image[row][col].blue = blue_color;
-        }
+    //use process_4() to rotate the image 90 degrees
+    if(angle % 90 != 0) {
+        cout << "angle must be a multiple of 90 degrees." << endl;
+        exit(1);
     }
-    return new_image;
+    else if(angle % 360 == 0) {
+        return image;
+    }
+    else if(angle % 360 == 90) {
+        return process_4(image);
+    }
+    else if(angle % 360 == 180) {
+        return process_4(process_4(image));
+    }
+    else {
+        return process_4(process_4(process_4(image)));
+    }
 };
 
 /**
- * Process 6: Enlarge
+ * Process 6: Enlarge by scale x and scale y
  * @param vector of the input BMP image as read by vector<vector<Pixel>> read_image(string filename)
  */
 vector<vector<Pixel>> process_6(const vector<vector<Pixel>>& image, int x_scale, int y_scale) {
@@ -444,17 +449,24 @@ vector<vector<Pixel>> process_6(const vector<vector<Pixel>>& image, int x_scale,
     //create the new image vector with the scaled size
     vector<vector<Pixel>> new_image(new_num_rows, vector<Pixel>(new_num_cols));
 
-    for(int row = 0; row < (num_rows * x_scale); row++) {
-        for(int col = 0; col < (num_columns * y_scale); col++) {
+    for(int row = 0; row < (new_num_rows); row++) {
+        for(int col = 0; col < (new_num_cols); col++) {
+            if((row % 2000) == 0) {
+                int stop = 1;
+            }
+            //intentionally truncate de-scaled pixel coordinates
+            int de_scaled_row = row / y_scale;
+            int de_scaled_col = col / x_scale;
+
             //store each pixel value at vector index
-            int red_color = image[row / y_scale][col / x_scale].red;
-            int blue_color = image[row / y_scale][col / x_scale].blue;
-            int green_color = image[row / y_scale][col / x_scale].green;
+            int red_color = image[de_scaled_row][de_scaled_col].red;
+            int blue_color = image[de_scaled_row][de_scaled_col].blue;
+            int green_color = image[de_scaled_row][de_scaled_col].green;
 
             //set each output pixel value to the input pixel value at vector index
             new_image[row][col].red = red_color;
-            new_image[row][col].green = green_color;
             new_image[row][col].blue = blue_color;
+            new_image[row][col].green = green_color;
         }
     }
     return new_image;
@@ -493,7 +505,7 @@ vector<vector<Pixel>> process_7(const vector<vector<Pixel>>& image) {
             else {
                 new_red = 0;
                 new_blue = 0;
-                new_green = 0;  
+                new_green = 0;
             }
 
             //set each output pixel value to the input pixel value at vector index
@@ -667,10 +679,27 @@ int main() {
             break;
         }
 
+        //create the long names of processes for display after selection
+        string disp_selected;
+        switch(stoi(menu_selection)) {
+            case 1: disp_selected = "Vignette"; break;
+            case 2: disp_selected = "Clarendon"; break;
+            case 3: disp_selected = "Grayscale"; break;
+            case 4: disp_selected = "Rotate 90 degrees"; break;
+            case 5: disp_selected = "Rotate multiple 90 degrees"; break;
+            case 6: disp_selected = "Enlarge"; break;
+            case 7: disp_selected = "High contrast"; break;
+            case 8: disp_selected = "Lighten"; break;
+            case 9: disp_selected = "Darken"; break;
+            case 10: disp_selected = "Black, white, red, green, blue"; break;
+        }
+
         //receive menu_selection
         //store output file name
         cout << endl;
-        cout << menu_selection << " selected" << endl;
+        cout << disp_selected << " selected" << endl;
+
+        string output_file;
 
         //Check for input 0 and handle changing the input file name
         if(menu_selection == "0") {
@@ -679,9 +708,17 @@ int main() {
             cout << "Successfully changed input image!" << endl;
         }
         else {
-            cout << "Enter output BMP filename: ";
-            string output_file;
-            cin >> output_file;
+            //redo input for output files that match input file
+            while(true) {
+                cout << "Enter output BMP filename: ";
+                cin >> output_file;
+                if(output_file == input_file) {
+                    cout << "Enter a different file from the input file." << endl;
+                }
+                else {
+                    break;
+                }
+            }
     
             //action
             //call read_image()
@@ -693,23 +730,20 @@ int main() {
 
             if(menu_selection == "1") {
                 processed_image = process_1(input_bmp);
-                selection_name = "Vignette";
             }
             else if(menu_selection == "2") {
                 processed_image = process_2(input_bmp);
-                selection_name = "Clarendon";
             }
             else if(menu_selection == "3") {
                 processed_image = process_3(input_bmp);
-                selection_name = "Grayscale";
             }
             else if(menu_selection == "4") {
                 processed_image = process_4(input_bmp);
-                selection_name = "Rotate 90 degrees";
             }
             else if(menu_selection == "5") {
-                processed_image = process_5(input_bmp);
-                selection_name = "Rotate multiple 90 degrees";
+                int number;
+                cin >> number;
+                processed_image = process_5(input_bmp, number);
             }
             else if(menu_selection == "6") {
                 int x_scale;
@@ -720,23 +754,18 @@ int main() {
                 cout << "Enter y scale: ";
                 cin >> y_scale;
                 processed_image = process_6(input_bmp, x_scale, y_scale);
-                selection_name = "Enlarge";
             }
             else if(menu_selection == "7") {
                 processed_image = process_7(input_bmp);
-                selection_name = "High contrast";
             }
             else if(menu_selection == "8") {
                 processed_image = process_8(input_bmp);
-                selection_name = "Lighten";
             }
             else if(menu_selection == "9") {
                 processed_image = process_9(input_bmp);
-                selection_name = "Darken";
             }
             else if(menu_selection == "10") {
                 processed_image = process_10(input_bmp);
-                selection_name = "Black, white, red, green, blue";
             }
     
             //store the bool output of write_image()
@@ -745,7 +774,7 @@ int main() {
             //result
             //check for successful return from write_image()
             if(success) {
-                cout << "Successfully applied " << selection_name << "!" << endl;
+                cout << "Successfully applied " << disp_selected << "!" << endl;
             }
             else {
                 cout << "Failed" << endl;
