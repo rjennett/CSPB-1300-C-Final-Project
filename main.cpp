@@ -754,6 +754,7 @@ void cli_process() {
             }
             else if(menu_selection == "5") {
                 int number;
+                cout << "Enter number of rotations: ";
                 cin >> number;
                 processed_image = process_5(input_bmp, number);
             }
