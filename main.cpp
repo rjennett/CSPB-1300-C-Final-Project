@@ -26,9 +26,7 @@ PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
 #include <vector>
 #include <fstream>
 #include <cmath>
-#include <filesystem>
 using namespace std;
-namespace fs = filesystem;
 
 //***************************************************************************************************//
 //                                DO NOT MODIFY THE SECTION BELOW                                    //
@@ -655,7 +653,8 @@ void cli_process() {
         //verify input file exists
         cout << "Enter input BMP filename: " << endl;
         cin >> input_file;
-        if(!fs::exists(input_file)) {
+        ifstream file(input_file);
+        if(!file.good()) {
             cout << "File does not exist, enter a .bmp path that exists." << endl;
         }
         else {
