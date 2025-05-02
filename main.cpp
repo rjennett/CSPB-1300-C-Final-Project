@@ -12,9 +12,11 @@ PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
 
 - If no, please explain what you could not get to work:
     - "Display an error message if the operation failed"
-        The provided function write_image() is supposed to return false if it fails,
-        but in my testing I only ran into segmentation fault crashes, which can't be
-        captured like typical errors.
+        Some simple errors are handled but I did not find a way to
+        handle errors in the provided image processing functions. My experience
+        with write_image() failing was that a segmentation fault occurred and
+        precluded the opportunity to use the false output from the function
+        to handle the error.
 
 - Did you do any optional enhancements? If so, please explain:
     NO
@@ -24,7 +26,9 @@ PLEASE FILL OUT THIS SECTION PRIOR TO SUBMISSION
 #include <vector>
 #include <fstream>
 #include <cmath>
+#include <filesystem>
 using namespace std;
+namespace fs = filesystem;
 
 //***************************************************************************************************//
 //                                DO NOT MODIFY THE SECTION BELOW                                    //
@@ -643,11 +647,21 @@ void cli_process() {
 
     //startup
     cout << "CSPB 1300 Image Processing Application" << endl;
-    cout << "Enter input BMP filename: " << endl;
     
     //store input file name
     string input_file;
-    cin >> input_file;
+    
+    while(true) {
+        //verify input file exists
+        cout << "Enter input BMP filename: " << endl;
+        cin >> input_file;
+        if(!fs::exists(input_file)) {
+            cout << "File does not exist, enter a .bmp path that exists." << endl;
+        }
+        else {
+            break;
+        }
+    }
 
     //define to control loop, checking for 'Q'
     string menu_selection;
